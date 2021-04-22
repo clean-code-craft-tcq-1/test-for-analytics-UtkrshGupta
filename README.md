@@ -46,7 +46,7 @@ Computation of maximum      | Yes           | This is part of the software being
 Off-the-shelf PDF converter | No            | Since this item is Off-the-shelf, it is expected that it has already passed all its unit tests 
 Counting the breaches       | Yes           | This is part of the software being developed
 Detecting trends            | Yes           | This is part of the software being developed
-Notification utility        | No            | This is External i
+Notification utility        | No            | This is External interface, should be tested using mocks
 
 ### List the Test Cases
 
