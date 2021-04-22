@@ -2,7 +2,7 @@
 
 Design tests for Analytics functionality on a Battery Monitoring System.
 
-Fill the parts marked '_enter' in the **Tasks** section below.
+Fill the parts marked 'enter' in the **Tasks** section below.
 
 ## Analysis-functionality to be tested
 
@@ -26,9 +26,12 @@ Notification must be sent when a new report is available.
 
 List the dependencies of the Analysis-functionality.
 
-1. Access to the Server containing the telemetrics in a csv file
-1. _enter dependency
-1. _enter dependency
+1. csv file on the server with data
+2. Read Access to the Server containing the telemetrics in a csv file
+3. Read and Write access authorizations for PDF generation and saving on server 
+4. Python Libraries such as numpy, Pandas, matplotlib, third party PDF generation libraries, smtp (if notification is sending via email)
+5. Sending Authorization and access to SMTP server ( Assuming Notification is being sent via Email )
+6. All pre-defined constants/thresholds
 
 (add more if needed)
 
@@ -40,10 +43,10 @@ What is included in the software unit-test? What is not? Fill this table.
 |---------------------------|---------------|---
 Battery Data-accuracy       | No            | We do not test the accuracy of data
 Computation of maximum      | Yes           | This is part of the software being developed
-Off-the-shelf PDF converter | _enter Yes/No | _enter reasoning
-Counting the breaches       | _enter Yes/No | _enter reasoning
-Detecting trends            | _enter Yes/No | _enter reasoning
-Notification utility        | _enter Yes/No | _enter reasoning
+Off-the-shelf PDF converter | No            | Since this item is Off-the-shelf, it is expected that it has already passed all its unit tests 
+Counting the breaches       | Yes           | This is part of the software being developed
+Detecting trends            | Yes           | This is part of the software being developed
+Notification utility        | No            | This is External interface, should be tested using mocks
 
 ### List the Test Cases
 
@@ -51,10 +54,19 @@ Write tests in the form of `<expected output or action>` from `<input>` / when `
 
 Add to these tests:
 
-1. Write minimum and maximum to the PDF from a csv containing positive and negative readings
-1. Write "Invalid input" to the PDF when the csv doesn't contain expected data
-1. _enter a test
-1. _enter a test
+1. Write/Return minimum and maximum to the PDF from a csv containing positive and negative readings
+2. Write/Return "Invalid input" to the PDF when the csv doesn't contain expected data
+3. Write/Return "No Data Found" to the PDF when the csv doen't have any data
+4. Write/Return "Standard server Return Code" when the server is not reachable such as 500, 501
+5. Write/Return "File Not Found" when csv file if not found on server
+6. Write/Return "Invalid Breach Count" when count of breaches are incorrectly calculated
+7. Write/Return Count of Breaches to the PDF when the CSV have some reading which are crossing threshold.
+8. Write/Return 0 as Breach Count when there are no breach seen
+9. Write/Return TimeStamp Details when the CSV readings are increasing continuously for 30 min.
+10. Write/Return "Not Available" in trends when there is no continuous reading increase available in CSV File.
+11. Write/Return "Successfully Saved" when the generated file is stored/saved in specified location of server every week.
+12. Write/Return "Sender/Recepient Invalid" when sender/recepient email address are invalid or not found. 
+13. Write/Return "Standard Email success/error Return code" whenever an email is sent or not for the new/updated available report such as 420, 421, 422
 
 (add more)
 
@@ -68,8 +80,8 @@ Enter one part that's real and another part that's faked/mocked.
 |--------------------------|--------------|-----------------------------|---
 Read input from server     | csv file     | internal data-structure     | Fake the server store
 Validate input             | csv data     | valid / invalid             | None - it's a pure function
-Notify report availability | _enter input | _enter output               | _enter fake or mock
-Report inaccessible server | _enter input | _enter output               | _enter fake or mock
-Find minimum and maximum   | _enter input | _enter output               | _enter fake or mock
-Detect trend               | _enter input | _enter output               | _enter fake or mock
-Write to PDF               | _enter input | _enter output               | _enter fake or mock
+Notify report availability | Report file path | invoke notification utility if file exits else takes error measures               | Fake Notification Ulitity
+Report inaccessible server | Server Path  | Standard 5xx server error Return codes eg. 500, 501                    | Fake the HTTP client
+Find minimum and maximum   | csv data     | Minimum/Maximum             | None - it's a pure function
+Detect trend               | csv data     | Trend TimeStamp Details     | None - it's a pure function
+Write to PDF               | Analysis Readings which needs to record in file     | PDF File                    | Fake the PDF Conversion
